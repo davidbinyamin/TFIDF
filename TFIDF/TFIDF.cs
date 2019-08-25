@@ -1,19 +1,18 @@
-﻿using System;
+﻿using Cache;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security;
-using Cache;
 
 
 namespace InformationRetrieval
 {
     public static class TextUtil
-    { 
+    {
         public static string[] Tokenize(string text)
         {
             // Tokenize and get rid of any punctuation
-            string[] tokenized =  text.Split(" \r\n@/.-:&*+=[]?!(){},''\">_<;%\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] tokenized = text.Split(" \r\n@/.-:&*+=[]?!(){},''\">_<;%\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             tokenized = tokenized.Select(s => s.ToLowerInvariant()).ToArray();
 
             return tokenized;
@@ -133,7 +132,7 @@ namespace InformationRetrieval
                 throw new System.ArgumentException("Empty parameters");
             }
 
-            Dictionary<string,double> bagOfWords =  m_corpusCache.GetFileBagOfWordsTF(fileName);
+            Dictionary<string, double> bagOfWords = m_corpusCache.GetFileBagOfWordsTF(fileName);
 
             string[] termParts = term.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             double termTf = 0;
@@ -142,13 +141,13 @@ namespace InformationRetrieval
             {
                 if (bagOfWords.ContainsKey(item.ToLower()))
                 {
-                    termTf += bagOfWords[item]; 
+                    termTf += bagOfWords[item];
                 }
             }
 
             return termTf;
         }
-        
+
         public double CacheCalculateIDF(string term)
         {
             if (term == "")
@@ -188,9 +187,9 @@ namespace InformationRetrieval
             else
             {
                 return Math.Log((double)totalFilesInCorpus / (double)numberOfFilesContainsTerm, 2);
-            }   
+            }
         }
-        
-        public double CacheCalculateTFIDF(string filename, string term) => Math.Round(CacheCalculateTF(filename, term) * CacheCalculateIDF(term),5);
+
+        public double CacheCalculateTFIDF(string filename, string term) => Math.Round(CacheCalculateTF(filename, term) * CacheCalculateIDF(term), 5);
     }
 }

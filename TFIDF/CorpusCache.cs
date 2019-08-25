@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Cache;
+using System.Collections.Generic;
 using System.IO;
-using Cache;
 
 namespace InformationRetrieval
 {
     class CorpusCache
     {
-        private IAlgoCache<string, Dictionary<string, double>> m_corpusCache;
+        private IAlgoCache<string, Dictionary<string, double>> m_algorithmCache;
         readonly string m_corpusPath;
 
         public CorpusCache(string corpusPath, IAlgoCache<string, Dictionary<string, double>> algorithmCache)
@@ -23,7 +23,7 @@ namespace InformationRetrieval
             }
         }
 
-        public IAlgoCache<string, Dictionary<string, double>> AlgorithmCache { get => m_corpusCache; set => m_corpusCache = value; }
+        public IAlgoCache<string, Dictionary<string, double>> AlgorithmCache { get => m_algorithmCache; set => m_algorithmCache = value; }
 
         public Dictionary<string, double> GetFileBagOfWordsTF(string fileName)
         {
@@ -51,7 +51,7 @@ namespace InformationRetrieval
                     }
                 }
 
-                AlgorithmCache.PutElement(fileName,fileBagOfWords);
+                AlgorithmCache.PutElement(fileName, fileBagOfWords);
             }
 
             return fileBagOfWords;
@@ -59,10 +59,10 @@ namespace InformationRetrieval
 
         public Dictionary<string, Dictionary<string, double>> GetAllBagsOfWordsInCourpus()
         {
-          
+
             var files = Directory.EnumerateFiles(m_corpusPath);
             Dictionary<string, Dictionary<string, double>> bagOfBags = new Dictionary<string, Dictionary<string, double>>();
-            
+
             foreach (var file in files)
             {
                 string key = file.Substring(m_corpusPath.Length).ToLower();

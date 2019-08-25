@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BagOfWordsCache.cs" />
+    <Compile Include="CorpusCache.cs" />
     <Compile Include="TFIDF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,6 +50,9 @@
       <Project>{cd436d18-7755-42fe-92e7-3688d529fbdc}</Project>
       <Name>Cache</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TfidfClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
