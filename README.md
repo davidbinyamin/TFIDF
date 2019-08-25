@@ -18,7 +18,7 @@ Cache.dll
 in this library you can use chache mechanism and select the caching algorithm at runtime by implementing strategy pattern.
 
 ## Class Diagram
-
+![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.JPG)
 
 ### Prerequisites
 Use Visual Studio 2019 to load the solution.
