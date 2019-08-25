@@ -1,5 +1,8 @@
-# TF-IDF
-TF-IDF implementation both with and without cache.
+# TF-IDF implementation in C#
+TF*IDF = Term Frequency * Inverse Document Frequency
+
+TFIDF is a way of representing a document, based upon its keywords holding values that represent their importance within the document. For a complete description of TFIDF, see http://en.wikipedia.org/wiki/Tf%E2%80%93idf
+
 
 ## Getting Started
 
@@ -25,5 +28,9 @@ Use visual studio 2019 to run the unit tests.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Copyright (c) 2019 David BInyamin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
