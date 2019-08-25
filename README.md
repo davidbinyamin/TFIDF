@@ -12,6 +12,14 @@ you can find the whole solution in this repository.
  * TFIDF.dll
  * Cache.dll
 
+### Description
+Cache.dll
+
+in this library you can use chache mechanism and select the caching algorithm at runtime by implementing strategy pattern.
+
+## Class Diagram
+
+
 ### Prerequisites
 Use Visual Studio 2019 to load the solution.
 
