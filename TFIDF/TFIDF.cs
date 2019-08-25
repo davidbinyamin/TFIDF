@@ -9,7 +9,7 @@ using Cache;
 namespace InformationRetrieval
 {
     public static class TextUtil
-    {
+    { 
         public static string[] Tokenize(string text)
         {
             // Tokenize and get rid of any punctuation
