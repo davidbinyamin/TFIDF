@@ -15,9 +15,9 @@ you can find the whole solution in this repository.
 ### Description
 Cache.dll
 
-in this library you can use chache mechanism and select the caching algorithm at runtime by implementing strategy pattern.
+in this library you can use chache mechanism and select the caching algorithm at runtime.
 
-## Class Diagram
+## Class Diagram and API
 ![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.JPG)
 
 ### Prerequisites
