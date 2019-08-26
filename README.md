@@ -17,17 +17,43 @@ Cache.dll
 
 in this library you can use chache mechanism and select the caching algorithm at runtime.
 
-## Class Diagram and API
+API:
+		V GetElement(K key);
+
+        V PutElement(K key, V value);
+
+        void RemoveElement(K key);
+
+
+TFIDF.dll
+
+A library to calculate TF, IDF and TFIDF of a term in a document within a corpus
+
+You can calculate TF, IDF & TFIDF directly by accessing the file system pn each calculation
+by using the following static API:
+	Public static double CalculateTF(string path, string filename, string term)
+	Public static double CalculateIDF(string path, string term)
+	Public static double CalculateTFIDF(string path, string filename, string term)
+
+Or use the Cache mechanism by using the following API:
+	Public double CacheCalculateTF(string path, string filename, string term)
+	Public double CacheCalculateIDF(string path, string term)
+	Public double CacheCalculateTFIDF(string path, string filename, string term)
+
+
+## Class Diagram
 ![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.JPG)
 
 ### Prerequisites
-Use Visual Studio 2019 to load the solution.
+Use Visual Studio 2019 to load the solution. with .Net Framework 4.7.2and above
 
 
 ## Running the tests
 
-Use visual studio 2019 to run the unit tests.
+Use Visual Studio 2019 to load the solution. with .Net Framework 4.7.2and above
 
+Use the command line program to try the TFIDF Library.
+"TFIIDF_TestProgram"
 
 ## Authors
 
