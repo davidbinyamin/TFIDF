@@ -18,7 +18,8 @@ Cache.dll
 in this library you can use chache mechanism and select the caching algorithm at runtime.
 
 API:
-		V GetElement(K key);
+
+	V GetElement(K key);
 
         V PutElement(K key, V value);
 
@@ -31,11 +32,13 @@ A library to calculate TF, IDF and TFIDF of a term in a document within a corpus
 
 You can calculate TF, IDF & TFIDF directly by accessing the file system pn each calculation
 by using the following static API:
+
 	Public static double CalculateTF(string path, string filename, string term)
 	Public static double CalculateIDF(string path, string term)
 	Public static double CalculateTFIDF(string path, string filename, string term)
 
 Or use the Cache mechanism by using the following API:
+
 	Public double CacheCalculateTF(string path, string filename, string term)
 	Public double CacheCalculateIDF(string path, string term)
 	Public double CacheCalculateTFIDF(string path, string filename, string term)
