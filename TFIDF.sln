@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "Cache\Cache.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoCache_Tests", "AlgoCache_Tests\AlgoCache_Tests.csproj", "{47525BD5-7E02-4377-B9A5-8724AEBCC98E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFIIDF_TestProgram", "TFIIDF_TestProgram\TFIIDF_TestProgram.csproj", "{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{47525BD5-7E02-4377-B9A5-8724AEBCC98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47525BD5-7E02-4377-B9A5-8724AEBCC98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47525BD5-7E02-4377-B9A5-8724AEBCC98E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
