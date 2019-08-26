@@ -19,7 +19,7 @@ namespace TFIDF_Tests
             bool isAllTokensEquals = true;
             for (int i = 0; i < clearSplit.Length; i++)
             {
-                if(!clearSplit[i].ToLower().Equals(tokenizedText[i]))
+                if (!clearSplit[i].ToLower().Equals(tokenizedText[i]))
                 {
                     isAllTokensEquals = false;
                     break;
@@ -76,7 +76,7 @@ namespace TFIDF_Tests
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("path", "filename", ""));
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("path", "", "term"));
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("", "filename", "term"));
-            
+
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("", "", "term"));
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("", "filename", ""));
             Assert.ThrowsException<ArgumentException>(() => TFIDF.CalculateTF("path", "", ""));
@@ -84,10 +84,10 @@ namespace TFIDF_Tests
             Assert.ThrowsException<FileNotFoundException>(() => TFIDF.CalculateTF("invalidPath", "invalidFile", "term"));
 
             Assert.ThrowsException<ArgumentException>(() => new TFIDF(""));
-            Assert.ThrowsException<DirectoryNotFoundException> (() => new TFIDF("invalidPath"));
+            Assert.ThrowsException<DirectoryNotFoundException>(() => new TFIDF("invalidPath"));
             TFIDF tfidf = new TFIDF(Directory.GetCurrentDirectory());
 
-            Assert.ThrowsException<ArgumentException>(() => tfidf.CacheCalculateTF("",""));
+            Assert.ThrowsException<ArgumentException>(() => tfidf.CacheCalculateTF("", ""));
             Assert.ThrowsException<ArgumentException>(() => tfidf.CacheCalculateTF("filename", ""));
             Assert.ThrowsException<ArgumentException>(() => tfidf.CacheCalculateTF("", "term"));
 
@@ -153,7 +153,7 @@ namespace TFIDF_Tests
         }
 
         [ClassCleanup]
-        public static void CleanUp ()
+        public static void CleanUp()
         {
             var files = Directory.EnumerateFiles(m_Path);
             foreach (var file in files)
@@ -209,7 +209,7 @@ namespace TFIDF_Tests
             InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_path);
             double heroIdfCached = tfidf.CacheCalculateIDF("hero");
 
-            double expectedIDF = Math.Log((double)3/(double)2, 2);
+            double expectedIDF = Math.Log((double)3 / (double)2, 2);
             Assert.AreEqual(expectedIDF, heroIdf, "CalculateIDF returns incorrect value");
             Assert.AreEqual(expectedIDF, heroIdfCached, "CalculateIDF_cached returns incorrect value");
         }
@@ -253,7 +253,7 @@ namespace TFIDF_Tests
                                                     Then you begin to make it better
 
                                                     And anytime you feel the pain
-                                                    Hey Jude refrain";                                              
+                                                    Hey Jude refrain";
 
         private static readonly string m_wholeWorld = @"He's got the whole world in His hands
                                                             He's got the whole world in His hands
