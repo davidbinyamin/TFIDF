@@ -18,12 +18,10 @@ Cache.dll
 in this library you can use chache mechanism and select the caching algorithm at runtime.
 
 API:
-
+	
 	V GetElement(K key);
-
-        V PutElement(K key, V value);
-
-        void RemoveElement(K key);
+	V PutElement(K key, V value);
+	void RemoveElement(K key);
 
 
 TFIDF.dll
