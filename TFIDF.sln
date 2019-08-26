@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "Cache\Cache.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoCache_Tests", "AlgoCache_Tests\AlgoCache_Tests.csproj", "{47525BD5-7E02-4377-B9A5-8724AEBCC98E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFIIDF_TestProgram", "TFIIDF_TestProgram\TFIIDF_TestProgram.csproj", "{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFIDF_TestProgram", "TFIIDF_TestProgram\TFIDF_TestProgram.csproj", "{3EBF3F1C-AEC3-4ABA-98D6-880349CE5940}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
