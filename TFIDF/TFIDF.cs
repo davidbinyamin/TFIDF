@@ -51,26 +51,18 @@ namespace InformationRetrieval
 
             string readText = File.ReadAllText(dirPath + fileName);
             string[] wordsInFile = TextUtil.Tokenize(readText);
-
-            string[] termParts = term.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            double termTf = 0;
-
-            foreach (string item in termParts)
+            int termFrequancy = 0;
+            term = term.ToLower();
+              
+            foreach (string word in wordsInFile)
             {
-                string termPart = item.ToLower();
-                double termPartCount = 0;
-                foreach (string word in wordsInFile)
+                if (term.Equals(word))
                 {
-                    if (termPart.Equals(word))
-                    {
-                        termPartCount++;
-                    }
+                    termFrequancy++;
                 }
-
-                termTf += termPartCount / wordsInFile.Length;
             }
 
-            return termTf;
+            return (double)termFrequancy / (double)wordsInFile.Length;
         }
 
         public static double CalculateIDF(string dirPath, string term)
@@ -86,44 +78,38 @@ namespace InformationRetrieval
             }
 
             var files = Directory.EnumerateFiles(dirPath);
+            int totalFilesInCorpus = files.Count();
 
-            int totalDocuments = files.Count();
+            if (totalFilesInCorpus == 0)
+            {
+                return 0;
+            }
+
             int numberOfFilesContainsTerm = 0;
-
-            string[] termParts = term.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            term = term.ToLower();
 
             foreach (var file in files)
             {
                 string readText = File.ReadAllText(file);
                 string[] wordsInFile = TextUtil.Tokenize(readText);
-
-                bool termInFile = true;
-                foreach (string word in termParts)
-                {
-                    if (!wordsInFile.Contains(word.ToLower()))
-                    {
-                        termInFile = false;
-                        break;
-                    }
-                }
-
-                if (termInFile)
+                
+                if (wordsInFile.Contains(term))
                 {
                     numberOfFilesContainsTerm++;
                 }
             }
 
+            double denominator = numberOfFilesContainsTerm;
+
             if (numberOfFilesContainsTerm == 0)
             {
-                return 0;
+                denominator = 1;
             }
-            else
-            {
-                return Math.Log((double)totalDocuments / (double)numberOfFilesContainsTerm, 2);
-            }
+
+            return Math.Log((double)totalFilesInCorpus / denominator, 2);
         }
 
-        public static double CalculateTFIDF(string dirpath, string filename, string term) => Math.Round(CalculateTF(dirpath, filename, term) * CalculateIDF(dirpath, term), 5);
+        public static double CalculateTFIDF(string dirpath, string filename, string term) => CalculateTF(dirpath, filename, term) * CalculateIDF(dirpath, term);
 
         public double CacheCalculateTF(string fileName, string term)
         {
@@ -133,19 +119,15 @@ namespace InformationRetrieval
             }
 
             Dictionary<string, double> bagOfWords = m_corpusCache.GetFileBagOfWordsTF(fileName);
+            double termTF = 0;
+            term = term.ToLower();
 
-            string[] termParts = term.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            double termTf = 0;
-
-            foreach (string item in termParts)
+            if (bagOfWords.ContainsKey(term))
             {
-                if (bagOfWords.ContainsKey(item.ToLower()))
-                {
-                    termTf += bagOfWords[item];
-                }
+                termTF = bagOfWords[term];
             }
 
-            return termTf;
+            return termTF;
         }
 
         public double CacheCalculateIDF(string term)
@@ -156,40 +138,34 @@ namespace InformationRetrieval
             }
 
             Dictionary<string, Dictionary<string, double>> bagOfBags = m_corpusCache.GetAllBagsOfWordsInCourpus();
-
             int totalFilesInCorpus = bagOfBags.Count();
-            int numberOfFilesContainsTerm = 0;
 
-            string[] termParts = term.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (totalFilesInCorpus == 0)
+            {
+                return 0;
+            }
+
+            int numberOfFilesContainsTerm = 0;
+            term = term.ToLower();
 
             foreach (var bag in bagOfBags)
-            {
-                bool termInFile = true;
-                foreach (string word in termParts)
-                {
-                    if (!bag.Value.ContainsKey(word.ToLower()))
-                    {
-                        termInFile = false;
-                        break;
-                    }
-                }
-
-                if (termInFile)
+            {               
+                if (bag.Value.ContainsKey(term))
                 {
                     numberOfFilesContainsTerm++;
                 }
             }
 
+            double denominator = numberOfFilesContainsTerm;
+
             if (numberOfFilesContainsTerm == 0)
             {
-                return 0;
+                denominator = 1;
             }
-            else
-            {
-                return Math.Log((double)totalFilesInCorpus / (double)numberOfFilesContainsTerm, 2);
-            }
+
+            return Math.Log((double)totalFilesInCorpus / denominator, 2);
         }
 
-        public double CacheCalculateTFIDF(string filename, string term) => Math.Round(CacheCalculateTF(filename, term) * CacheCalculateIDF(term), 5);
+        public double CacheCalculateTFIDF(string filename, string term) => CacheCalculateTF(filename, term) * CacheCalculateIDF(term);
     }
 }

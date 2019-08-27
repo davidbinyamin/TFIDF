@@ -154,7 +154,6 @@ namespace TFIIDF_TestProgram
             }
 
             m_level = MenuLevel.Term;
-
         }
 
         private static void HandleTerm()
@@ -206,6 +205,7 @@ namespace TFIIDF_TestProgram
                     default:
                         break;
                 }
+
                 m_level = MenuLevel.showResult;
             }
             catch (Exception e)
@@ -231,11 +231,10 @@ namespace TFIIDF_TestProgram
             if (args is null)
             {
                 throw new ArgumentNullException(nameof(args));
-            }
-
-            
+            }            
 
             bool exit = false;
+
             while (!exit)
             {
                 switch (m_level)

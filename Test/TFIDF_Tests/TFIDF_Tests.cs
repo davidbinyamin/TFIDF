@@ -13,7 +13,7 @@ namespace TFIDF_Tests
         {
             string text = "I am Iron man";
             string[] clearSplit = text.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            string[] tokenizedText = InformationRetrieval.TextUtil.Tokenize(text);
+            string[] tokenizedText = TextUtil.Tokenize(text);
             Assert.AreEqual(4, tokenizedText.Length, "Number of tokens are not correct");
 
             bool isAllTokensEquals = true;
@@ -34,7 +34,7 @@ namespace TFIDF_Tests
         {
             string text = @"Iron-man: Chris, you must surrender.
                             Captain America (Chris): i can do this all day! : )";
-            string[] tokenizedText = InformationRetrieval.TextUtil.Tokenize(text);
+            string[] tokenizedText = TextUtil.Tokenize(text);
 
             Assert.AreEqual(15, tokenizedText.Length, "Number of tokens is not correct");
 
@@ -97,59 +97,24 @@ namespace TFIDF_Tests
         [TestMethod]
         public void TermNotInFileTest()
         {
-            double tfNoCache = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "david");
+            double tfNoCache = TFIDF.CalculateTF(m_Path, m_TestFile, "david");
 
             Assert.AreEqual(0, tfNoCache);
 
-            InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_Path);
+            TFIDF tfidf = new TFIDF(m_Path);
             double tfCached = tfidf.CacheCalculateTF(m_TestFile, "david");
             Assert.AreEqual(tfCached, tfNoCache);
         }
 
         [TestMethod]
-        public void OneWordTermInFileTest()
+        public void termInFileTest()
         {
-            double tfNoCache = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "data");
+            double tfNoCache = TFIDF.CalculateTF(m_Path, m_TestFile, "data");
             Assert.AreEqual(0.125, tfNoCache);
 
-            InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_Path);
+            TFIDF tfidf = new TFIDF(m_Path);
             double tfCached = tfidf.CacheCalculateTF(m_TestFile, "data");
             Assert.AreEqual(tfNoCache, tfCached);
-        }
-
-        [TestMethod]
-        public void AllTermWordsInFileTest()
-        {
-            string term = "captain america hero";
-
-            double tfCaptain = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "captain");
-            double tfAmerica = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "america");
-            double tfHero = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "hero");
-            double expectedTf = tfCaptain + tfAmerica + tfHero;
-
-            Assert.AreEqual(expectedTf, InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, term));
-
-            InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_Path);
-            double tfCached = tfidf.CacheCalculateTF(m_TestFile, term);
-            Assert.AreEqual(tfCached, expectedTf);
-        }
-
-        [TestMethod]
-        public void SomeTermWordsInFileTest()
-        {
-            string term = "captain america hero";
-
-            double tfCaptain = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "captain");
-            double tfAmerica = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "america");
-            double tfHero = InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, "rules");
-            double expectedTf = tfCaptain + tfAmerica + tfHero;
-
-            Assert.AreEqual(expectedTf, InformationRetrieval.TFIDF.CalculateTF(m_Path, m_TestFile, term));
-
-
-            InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_Path);
-            double tfCached = tfidf.CacheCalculateTF(m_TestFile, term);
-            Assert.AreEqual(tfCached, expectedTf);
         }
 
         [ClassCleanup]
@@ -202,29 +167,58 @@ namespace TFIDF_Tests
         }
 
         [TestMethod]
-        public void OneWordTermIdfTest()
+        public void TermInSomeFilesIdfTest()
         {
-            double heroIdf = InformationRetrieval.TFIDF.CalculateIDF(m_path, "hero");
+            double heroIdf = TFIDF.CalculateIDF(m_path, "hero");
 
-            InformationRetrieval.TFIDF tfidf = new InformationRetrieval.TFIDF(m_path);
+            TFIDF tfidf = new TFIDF(m_path);
             double heroIdfCached = tfidf.CacheCalculateIDF("hero");
 
             double expectedIDF = Math.Log((double)3 / (double)2, 2);
             Assert.AreEqual(expectedIDF, heroIdf, "CalculateIDF returns incorrect value");
-            Assert.AreEqual(expectedIDF, heroIdfCached, "CalculateIDF_cached returns incorrect value");
+            Assert.AreEqual(expectedIDF, heroIdfCached, "CacheCalculateIDF returns incorrect value");
         }
 
         [TestMethod]
-        public void TermIdfTest()
+        public void EmptyCorpusTest()
         {
-            double heroIdf = TFIDF.CalculateIDF(m_path, "hero concept");
+            string emptyCprpusPath = m_path + "empty Corpus";
+            Directory.CreateDirectory(emptyCprpusPath);
+            TFIDF tfidf = new TFIDF(emptyCprpusPath);
+
+            double idf = TFIDF.CalculateIDF(emptyCprpusPath, "term");
+            double cacheIdf = tfidf.CacheCalculateIDF("term");
+
+            Assert.AreEqual(0, idf);
+            Assert.AreEqual(0, cacheIdf);
+
+            Directory.Delete(emptyCprpusPath);
+        }
+
+        [TestMethod]
+        public void TermInAllFilesIDFTest()
+        {
+            double heroIdf = TFIDF.CalculateIDF(m_path, "of");
 
             TFIDF tfidf = new TFIDF(m_path);
-            double heroIdfCached = tfidf.CacheCalculateIDF("hero concept");
+            double heroIdfCached = tfidf.CacheCalculateIDF("of");
 
-            double expectedIDF = Math.Log((double)3, 2);
+            double expectedIDF = 0;
             Assert.AreEqual(expectedIDF, heroIdf, "CalculateIDF returns incorrect value");
-            Assert.AreEqual(expectedIDF, heroIdfCached, "CalculateIDF_cached returns incorrect value");
+            Assert.AreEqual(expectedIDF, heroIdfCached, "CacheCalculateIDF returns incorrect value");
+        }
+
+        [TestMethod]
+        public void TermNotInCorpus()
+        {
+            double greenIdf = Math.Round(TFIDF.CalculateIDF(m_path, "green"),5);
+
+            TFIDF tfidf = new TFIDF(m_path);
+            double greenIdfCached = Math.Round(tfidf.CacheCalculateIDF("green"),5);
+
+            double expectedIDF = Math.Round(1.58496250072116,5);
+            Assert.AreEqual(expectedIDF, greenIdf, "CalculateIDF returns incorrect value");
+            Assert.AreEqual(expectedIDF, greenIdfCached, "CacheCalculateIDF returns incorrect value");
         }
 
 
@@ -331,9 +325,9 @@ namespace TFIDF_Tests
 
             Directory.CreateDirectory(m_path);
             CleanUp();
-            System.IO.File.WriteAllText(m_path + m_testFile1, m_hayJude);
-            System.IO.File.WriteAllText(m_path + m_testFile2, m_wholeWorld);
-            System.IO.File.WriteAllText(m_path + m_testFile3, m_healTheWorld);
+            File.WriteAllText(m_path + m_testFile1, m_hayJude);
+            File.WriteAllText(m_path + m_testFile2, m_wholeWorld);
+            File.WriteAllText(m_path + m_testFile3, m_healTheWorld);
         }
 
         [TestMethod]
@@ -341,30 +335,32 @@ namespace TFIDF_Tests
         {
             TFIDF tfidf = new TFIDF(m_path);
 
-            double tfidfJudeAndHeyJude = TFIDF.CalculateTFIDF(m_path, m_testFile1, "jude");
-            double tfidfJudeAndHeyJude_cache = tfidf.CacheCalculateTFIDF(m_testFile1, "jude");
+            double tfidfJudeAndHeyJude = Math.Round(TFIDF.CalculateTFIDF(m_path, m_testFile1, "jude"), 5);
+            double cacheTfidfJudeAndHeyJude = Math.Round(tfidf.CacheCalculateTFIDF(m_testFile1, "jude"), 5);
 
             Assert.AreEqual(0.06891, tfidfJudeAndHeyJude);
-            Assert.AreEqual(tfidfJudeAndHeyJude, tfidfJudeAndHeyJude_cache);
+            Assert.AreEqual(tfidfJudeAndHeyJude, cacheTfidfJudeAndHeyJude);
 
-            double tfidfJudeAndHisGotTheWholeWorld = TFIDF.CalculateTFIDF(m_path, m_testFile2, "jude");
-            double tfidfJudeAndHisGotTheWholeWorld_cache = tfidf.CacheCalculateTFIDF(m_testFile2, "jude");
+            double tfidfJudeAndHisGotTheWholeWorld = Math.Round(TFIDF.CalculateTFIDF(m_path, m_testFile2, "jude"), 5);
+            double cacheTfidfJudeAndHisGotTheWholeWorld = Math.Round(tfidf.CacheCalculateTFIDF(m_testFile2, "jude"), 5);
 
             Assert.AreEqual(0, tfidfJudeAndHisGotTheWholeWorld);
-            Assert.AreEqual(0, tfidfJudeAndHisGotTheWholeWorld_cache);
+            Assert.AreEqual(0, cacheTfidfJudeAndHisGotTheWholeWorld);
 
-            double tfidfWorldAndHeyJude = TFIDF.CalculateTFIDF(m_path, m_testFile1, "world");
-            double tfidfWorldAndHeyJude_cache = tfidf.CacheCalculateTFIDF(m_testFile1, "world");
-            Assert.AreEqual(tfidfWorldAndHeyJude, tfidfWorldAndHeyJude_cache);
+            double tfidfWorldAndHeyJude = Math.Round(TFIDF.CalculateTFIDF(m_path, m_testFile1, "world"), 5);
+            double cacheTfidfWorldAndHeyJude = Math.Round(tfidf.CacheCalculateTFIDF(m_testFile1, "world"), 5);
 
-            double tfidfWorldAndHisGotTheWholeWorld = TFIDF.CalculateTFIDF(m_path, m_testFile2, "world");
-            double tfidfWorldAndHisGotTheWholeWorld_cache = tfidf.CacheCalculateTFIDF(m_testFile2, "world");
-            Assert.AreEqual(tfidfWorldAndHisGotTheWholeWorld, tfidfWorldAndHisGotTheWholeWorld_cache);
+            Assert.AreEqual(tfidfWorldAndHeyJude, cacheTfidfWorldAndHeyJude);
 
-            double tfidfWorldAndHealTheWorld = TFIDF.CalculateTFIDF(m_path, m_testFile3, "world");
-            double tfidfWorldAndHealTheWorld_cache = tfidf.CacheCalculateTFIDF(m_testFile3, "world");
-            Assert.AreEqual(tfidfWorldAndHealTheWorld, tfidfWorldAndHealTheWorld_cache);
+            double tfidfWorldAndHisGotTheWholeWorld = Math.Round(TFIDF.CalculateTFIDF(m_path, m_testFile2, "world"), 5);
+            double cacheTfidfWorldAndHisGotTheWholeWorld = Math.Round(tfidf.CacheCalculateTFIDF(m_testFile2, "world"), 5);
 
+            Assert.AreEqual(tfidfWorldAndHisGotTheWholeWorld, cacheTfidfWorldAndHisGotTheWholeWorld);
+
+            double tfidfWorldAndHealTheWorld = Math.Round(TFIDF.CalculateTFIDF(m_path, m_testFile3, "world"), 5);
+            double cacheTfidfWorldAndHealTheWorls = Math.Round(tfidf.CacheCalculateTFIDF(m_testFile3, "world"), 5);
+
+            Assert.AreEqual(tfidfWorldAndHealTheWorld, cacheTfidfWorldAndHealTheWorls);
             Assert.IsTrue(tfidfWorldAndHisGotTheWholeWorld > tfidfWorldAndHealTheWorld && tfidfWorldAndHealTheWorld > tfidfWorldAndHeyJude);
         }
 
