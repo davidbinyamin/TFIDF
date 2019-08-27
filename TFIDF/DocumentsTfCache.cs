@@ -6,16 +6,17 @@ namespace InformationRetrieval
 {
     class DocumentsTfCache
     {
-        private IAlgoCache<string, Dictionary<string, double>> m_algorithmCache;
-        readonly string m_dirPath;
+        private readonly string m_dirPath;
 
-        public DocumentsTfCache(string dirPath, IAlgoCache<string, Dictionary<string, double>> algorithmCache)
+        public IAlgorithmCache<string, Dictionary<string, double>> AlgorithmCache { get; set; }
+
+        public DocumentsTfCache(string dirPath, IAlgorithmCache<string, Dictionary<string, double>> algorithmCache)
         {
-            this.AlgorithmCache = algorithmCache;
+            AlgorithmCache = algorithmCache;
 
             if (Directory.Exists(dirPath))
             {
-                this.m_dirPath = dirPath;
+                m_dirPath = dirPath;
             }
             else
             {
@@ -23,16 +24,13 @@ namespace InformationRetrieval
             }
         }
 
-        public IAlgoCache<string, Dictionary<string, double>> AlgorithmCache { get => m_algorithmCache; set => m_algorithmCache = value; }
-
         public Dictionary<string, double> GetDocumentBagOfWordsTF(string fileName)
         {
             Dictionary<string, double> bagOfWords;
-            try
-            {
-                bagOfWords = AlgorithmCache.GetElement(fileName);
-            }
-            catch (KeyNotFoundException)
+
+            bagOfWords = AlgorithmCache.GetElement(fileName);
+
+            if (bagOfWords == null)
             {
                 string text = File.ReadAllText(m_dirPath + fileName);
                 string[] wordsInDocument = TextUtil.Tokenize(text);
@@ -57,7 +55,7 @@ namespace InformationRetrieval
             return bagOfWords;
         }
 
-        public Dictionary<string, Dictionary<string, double>> GetAllBagsOfWordsInCourpus()
+        public Dictionary<string, Dictionary<string, double>> GetAllBagsOfWordsInDirectory()
         {
 
             var documents = Directory.EnumerateFiles(m_dirPath);

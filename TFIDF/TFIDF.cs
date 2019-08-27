@@ -29,8 +29,9 @@ namespace InformationRetrieval
             {
                 if (value == "")
                 {
-                    throw new System.ArgumentException("Empty parameters");
+                    throw new ArgumentException("Empty parameters");
                 }
+
                 m_dirPath = value;
             }
         }
@@ -38,14 +39,14 @@ namespace InformationRetrieval
         public TFIDF(string path)
         {
             DirPath = path;
-            m_tfCache = new DocumentsTfCache(path, new RandomReplacementAlgoCacheImpl<string, Dictionary<string, double>>());
+            m_tfCache = new DocumentsTfCache(path, new RandomReplacementAlgorithmCache<string, Dictionary<string, double>>());
         }
 
         public static double CalculateTF(string dirPath, string fileName, string term)
         {
             if (dirPath == "" || fileName == "" || term == "")
             {
-                throw new System.ArgumentException("Empty parameters");
+                throw new ArgumentException("Empty parameters");
             }
 
             string readText = File.ReadAllText(dirPath + fileName);
@@ -66,14 +67,9 @@ namespace InformationRetrieval
 
         public static double CalculateIDF(string dirPath, string term)
         {
-            if (dirPath == "")
+            if (dirPath == "" || term == "")
             {
-                throw new System.ArgumentException("Empty parameters");
-            }
-
-            if (!Directory.Exists(dirPath))
-            {
-                throw new System.ArgumentException("Invalid dir path");
+                throw new ArgumentException("Empty parameters");
             }
 
             var documents = Directory.EnumerateFiles(dirPath);
@@ -114,7 +110,7 @@ namespace InformationRetrieval
         {
             if (fileName == "" || term == "")
             {
-                throw new System.ArgumentException("Empty parameters");
+                throw new ArgumentException("Empty parameters");
             }
 
             Dictionary<string, double> bagOfWords = m_tfCache.GetDocumentBagOfWordsTF(fileName);
@@ -133,10 +129,10 @@ namespace InformationRetrieval
         {
             if (term == "")
             {
-                throw new System.ArgumentException("Empty parameters");
+                throw new ArgumentException("Empty parameters");
             }
 
-            Dictionary<string, Dictionary<string, double>> bagOfBags = m_tfCache.GetAllBagsOfWordsInCourpus();
+            Dictionary<string, Dictionary<string, double>> bagOfBags = m_tfCache.GetAllBagsOfWordsInDirectory();
             int totalDocumentsInDirectory = bagOfBags.Count();
 
             if (totalDocumentsInDirectory == 0)

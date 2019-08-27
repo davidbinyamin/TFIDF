@@ -4,45 +4,59 @@ using System.Collections.Generic;
 
 namespace Cache
 {
-    public class RandomReplacementAlgoCacheImpl<K, V> : IAlgoCache<K, V>
+    public class RandomReplacementAlgorithmCache<K, V> : IAlgorithmCache<K, V>
     {
+        private static readonly int m_defaultCapacity = 50;
         private readonly Dictionary <K, V> m_cache;
         private readonly ArrayList m_keyIndex;
-        private readonly int m_capacity;
         private int m_freeSpace;
+        private readonly Random m_random;
 
-        public RandomReplacementAlgoCacheImpl(int capacity=50) 
+        public RandomReplacementAlgorithmCache() : this(m_defaultCapacity) { }
+
+        public RandomReplacementAlgorithmCache(int capacity) 
         {
-            this.m_capacity = capacity;
-
-            m_freeSpace = this.m_capacity;
-            m_cache = new Dictionary<K, V>(this.m_capacity);
+            m_freeSpace = capacity;
+            m_cache = new Dictionary<K, V>(capacity);
             m_keyIndex = new ArrayList();
+            m_random = new Random();
         }
 
         public V GetElement(K key)
         {
-            return m_cache[key];
+            if (m_cache.ContainsKey(key))
+            {
+                return m_cache[key];
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public V PutElement(K key, V value)
         {
             if (m_keyIndex.Contains(key))
+            {
                 return m_cache[key];
+            }
 
             if (m_freeSpace > 0)
             {
                 m_freeSpace--;
                 m_keyIndex.Add(key);
+
                 return m_cache[key] = value;
             }
-            Random rand = new Random();
-            int rndIndex = 0 + rand.Next(m_keyIndex.Count);
-            V v = m_cache[(K)m_keyIndex[rndIndex]];
-            m_cache.Remove((K)m_keyIndex[rndIndex]);
+
+            int rndIndex = m_random.Next(m_keyIndex.Count);
+            K keyToRemove = (K)m_keyIndex[rndIndex];
+            V removedValue = m_cache[keyToRemove];
+            m_cache.Remove(keyToRemove);
             m_cache[key] = value;
             m_keyIndex[rndIndex] = key;
-            return v;
+
+            return removedValue;
         }
 
         public void RemoveElement(K key)

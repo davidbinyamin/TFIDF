@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAlgoCache.cs" />
+    <Compile Include="IAlgorithmCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomReplacementAlgoCacheImpl.cs" />
+    <Compile Include="RandomReplacementAlgorithmCache.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

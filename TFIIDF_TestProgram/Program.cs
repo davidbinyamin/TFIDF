@@ -123,15 +123,15 @@ namespace TFIIDF_TestProgram
         {
             PrintSubMenuHeadLine();
             PrinCacheQuestion();
-            m_option = Console.ReadKey().KeyChar;
-            if (m_option == 'y' || m_option == 'Y')
+            m_option = Char.ToLower(Console.ReadKey().KeyChar);
+            if (m_option == 'y')
             {
                 m_useCache = true;
                 m_level = MenuLevel.FileName;
             }
             else
             {
-                if (m_option == 'n' || m_option == 'N')
+                if (m_option == 'n')
                 {
                     m_useCache = false;
                     m_level = MenuLevel.FileName;

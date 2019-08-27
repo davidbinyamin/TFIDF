@@ -1,15 +1,17 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Cache;
 
-namespace AlgoCache_Tests
+namespace AlgorithmCache_Tests
 {
     [TestClass]
-    public class AlgoCache_UnitTests
+    public class RRCache
     {
+        //TODO - add tests
         [TestMethod]
-        public void TestMethod1()
+        public void GetElementTests()
         {
-            //TODO - implement
+
         }
     }
 }

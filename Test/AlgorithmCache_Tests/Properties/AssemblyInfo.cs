@@ -2,18 +2,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("AlgoCache_Tests")]
+[assembly: AssemblyTitle("AlgorithmCache_Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AlgoCache_Tests")]
+[assembly: AssemblyProduct("AlgorithmCache_Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("5f2874c1-5ab7-4620-ac36-3ab5f6159db5")]
+[assembly: Guid("c4574137-9568-40ad-b271-a9ab4bd4417d")]
 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
