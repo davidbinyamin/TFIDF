@@ -6,7 +6,7 @@ TFIDF is a way of representing a document, based upon its keywords holding value
 
 ## Getting Started
 
-you can find the whole solution in this repository.
+you can find the solution in this repository.
 
 2 compilation products:
  * TFIDF.dll
@@ -15,7 +15,7 @@ you can find the whole solution in this repository.
 ### Description
 Cache.dll
 
-in this library you can use chache mechanism and select the caching algorithm at runtime.
+in this library you can use cache mechanism and select the caching algorithm at runtime.
 
 API:
 	
@@ -28,7 +28,7 @@ TFIDF.dll
 
 A library to calculate TF, IDF and TFIDF of a term in a document within a corpus
 
-You can calculate TF, IDF & TFIDF directly by accessing the file system pn each calculation
+You can calculate TF, IDF & TFIDF directly by accessing the file system on each calculation
 by using the following static API:
 
 	Public static double CalculateTF(string path, string filename, string term)
