@@ -11,35 +11,34 @@ namespace InformationRetrieval
     {
         public static string[] Tokenize(string text)
         {
-            // Tokenize and get rid of any punctuation
-            string[] tokenized = text.Split(" \r\n@/.-:&*+=[]?!(){},''\">_<;%\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            tokenized = tokenized.Select(s => s.ToLowerInvariant()).ToArray();
+            string[] tokenized = text.ToLower().Split(" \r\n@/.-:&*+=[]?!(){},''\">_<;%\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             return tokenized;
         }
     }
+
     public class TFIDF
     {
-        private readonly CorpusCache m_corpusCache;
-        private string m_corpusPath;
+        private readonly DocumentsTfCache m_tfCache;
+        private string m_dirPath;
 
-        public string CorpusPath
+        public string DirPath
         {
-            get { return m_corpusPath; }
+            get { return m_dirPath; }
             set
             {
                 if (value == "")
                 {
                     throw new System.ArgumentException("Empty parameters");
                 }
-                m_corpusPath = value;
+                m_dirPath = value;
             }
         }
 
         public TFIDF(string path)
         {
-            CorpusPath = path;
-            m_corpusCache = new CorpusCache(path, new RandomReplacementAlgoCacheImpl<string, Dictionary<string, double>>());
+            DirPath = path;
+            m_tfCache = new DocumentsTfCache(path, new RandomReplacementAlgoCacheImpl<string, Dictionary<string, double>>());
         }
 
         public static double CalculateTF(string dirPath, string fileName, string term)
@@ -50,11 +49,11 @@ namespace InformationRetrieval
             }
 
             string readText = File.ReadAllText(dirPath + fileName);
-            string[] wordsInFile = TextUtil.Tokenize(readText);
+            string[] wordsInDocument = TextUtil.Tokenize(readText);
             int termFrequancy = 0;
             term = term.ToLower();
               
-            foreach (string word in wordsInFile)
+            foreach (string word in wordsInDocument)
             {
                 if (term.Equals(word))
                 {
@@ -62,7 +61,7 @@ namespace InformationRetrieval
                 }
             }
 
-            return (double)termFrequancy / (double)wordsInFile.Length;
+            return (double)termFrequancy / (double)wordsInDocument.Length;
         }
 
         public static double CalculateIDF(string dirPath, string term)
@@ -77,36 +76,36 @@ namespace InformationRetrieval
                 throw new System.ArgumentException("Invalid dir path");
             }
 
-            var files = Directory.EnumerateFiles(dirPath);
-            int totalFilesInCorpus = files.Count();
+            var documents = Directory.EnumerateFiles(dirPath);
+            int totalDocumentsInDirectory = documents.Count();
 
-            if (totalFilesInCorpus == 0)
+            if (totalDocumentsInDirectory == 0)
             {
                 return 0;
             }
 
-            int numberOfFilesContainsTerm = 0;
+            int numberOfDocumentsContainsTerm = 0;
             term = term.ToLower();
 
-            foreach (var file in files)
+            foreach (var document in documents)
             {
-                string readText = File.ReadAllText(file);
-                string[] wordsInFile = TextUtil.Tokenize(readText);
+                string readText = File.ReadAllText(document);
+                string[] wordsInDocument = TextUtil.Tokenize(readText);
                 
-                if (wordsInFile.Contains(term))
+                if (wordsInDocument.Contains(term))
                 {
-                    numberOfFilesContainsTerm++;
+                    numberOfDocumentsContainsTerm++;
                 }
             }
 
-            double denominator = numberOfFilesContainsTerm;
+            double denominator = numberOfDocumentsContainsTerm;
 
-            if (numberOfFilesContainsTerm == 0)
+            if (numberOfDocumentsContainsTerm == 0)
             {
                 denominator = 1;
             }
 
-            return Math.Log((double)totalFilesInCorpus / denominator, 2);
+            return Math.Log((double)totalDocumentsInDirectory / denominator, 2);
         }
 
         public static double CalculateTFIDF(string dirpath, string filename, string term) => CalculateTF(dirpath, filename, term) * CalculateIDF(dirpath, term);
@@ -118,7 +117,7 @@ namespace InformationRetrieval
                 throw new System.ArgumentException("Empty parameters");
             }
 
-            Dictionary<string, double> bagOfWords = m_corpusCache.GetFileBagOfWordsTF(fileName);
+            Dictionary<string, double> bagOfWords = m_tfCache.GetDocumentBagOfWordsTF(fileName);
             double termTF = 0;
             term = term.ToLower();
 
@@ -137,33 +136,33 @@ namespace InformationRetrieval
                 throw new System.ArgumentException("Empty parameters");
             }
 
-            Dictionary<string, Dictionary<string, double>> bagOfBags = m_corpusCache.GetAllBagsOfWordsInCourpus();
-            int totalFilesInCorpus = bagOfBags.Count();
+            Dictionary<string, Dictionary<string, double>> bagOfBags = m_tfCache.GetAllBagsOfWordsInCourpus();
+            int totalDocumentsInDirectory = bagOfBags.Count();
 
-            if (totalFilesInCorpus == 0)
+            if (totalDocumentsInDirectory == 0)
             {
                 return 0;
             }
 
-            int numberOfFilesContainsTerm = 0;
+            int numberOfDocumentsContainsTerm = 0;
             term = term.ToLower();
 
             foreach (var bag in bagOfBags)
             {               
                 if (bag.Value.ContainsKey(term))
                 {
-                    numberOfFilesContainsTerm++;
+                    numberOfDocumentsContainsTerm++;
                 }
             }
 
-            double denominator = numberOfFilesContainsTerm;
+            double denominator = numberOfDocumentsContainsTerm;
 
-            if (numberOfFilesContainsTerm == 0)
+            if (numberOfDocumentsContainsTerm == 0)
             {
                 denominator = 1;
             }
 
-            return Math.Log((double)totalFilesInCorpus / denominator, 2);
+            return Math.Log((double)totalDocumentsInDirectory / denominator, 2);
         }
 
         public double CacheCalculateTFIDF(string filename, string term) => CacheCalculateTF(filename, term) * CacheCalculateIDF(term);

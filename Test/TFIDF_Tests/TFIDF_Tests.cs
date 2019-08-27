@@ -107,7 +107,7 @@ namespace TFIDF_Tests
         }
 
         [TestMethod]
-        public void termInFileTest()
+        public void TermInFileTest()
         {
             double tfNoCache = TFIDF.CalculateTF(m_Path, m_TestFile, "data");
             Assert.AreEqual(0.125, tfNoCache);
@@ -167,7 +167,7 @@ namespace TFIDF_Tests
         }
 
         [TestMethod]
-        public void TermInSomeFilesIdfTest()
+        public void TermInSomeDocumentsIdfTest()
         {
             double heroIdf = TFIDF.CalculateIDF(m_path, "hero");
 
@@ -180,23 +180,23 @@ namespace TFIDF_Tests
         }
 
         [TestMethod]
-        public void EmptyCorpusTest()
+        public void EmptyDirectoryTest()
         {
-            string emptyCprpusPath = m_path + "empty Corpus";
-            Directory.CreateDirectory(emptyCprpusPath);
-            TFIDF tfidf = new TFIDF(emptyCprpusPath);
+            string emptyDirectoryPath = m_path + "empty Directory";
+            Directory.CreateDirectory(emptyDirectoryPath);
+            TFIDF tfidf = new TFIDF(emptyDirectoryPath);
 
-            double idf = TFIDF.CalculateIDF(emptyCprpusPath, "term");
+            double idf = TFIDF.CalculateIDF(emptyDirectoryPath, "term");
             double cacheIdf = tfidf.CacheCalculateIDF("term");
 
             Assert.AreEqual(0, idf);
             Assert.AreEqual(0, cacheIdf);
 
-            Directory.Delete(emptyCprpusPath);
+            Directory.Delete(emptyDirectoryPath);
         }
 
         [TestMethod]
-        public void TermInAllFilesIDFTest()
+        public void TermInAllDocumentsIDFTest()
         {
             double heroIdf = TFIDF.CalculateIDF(m_path, "of");
 
@@ -209,7 +209,7 @@ namespace TFIDF_Tests
         }
 
         [TestMethod]
-        public void TermNotInCorpus()
+        public void TermNotInDocuments()
         {
             double greenIdf = Math.Round(TFIDF.CalculateIDF(m_path, "green"),5);
 

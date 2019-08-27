@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CorpusCache.cs" />
+    <Compile Include="DocumentsTfCache.cs" />
     <Compile Include="TFIDF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

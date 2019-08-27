@@ -12,11 +12,11 @@ namespace TFIIDF_TestProgram
         private static string m_term = "";
         private static bool m_useCache = false;
         private static Command m_command = Command.TFIDF;
-        private static MenuLevel m_level = MenuLevel.path;
+        private static MenuLevel m_level = MenuLevel.Path;
         private static double m_result = 0;
         private static TFIDF m_tfidf;
 
-        private enum MenuLevel { path, selectCommand, useCache, fileName, Term, runCommand, showResult, exit };
+        private enum MenuLevel { Path, SelectCommand, UseCache, FileName, Term, RunCommand, ShowResult, Exit };
         private enum Command { TF, IDF, TFIDF };
 
         private static void PrintHeadLine()
@@ -62,23 +62,23 @@ namespace TFIIDF_TestProgram
             }
         }
 
-        private static void PrintResult(Command command, string path, string fileName, string term, double result)
+        private static void PrintResult()
         {
             PrintHeadLine();
-            Console.WriteLine("result: {0}", result);
+            PrintSubMenuHeadLine();
+            Console.WriteLine("result: {0}", m_result);
         }
 
         private static void HandlePath()
         {
             PrintHeadLine();
-            Console.WriteLine("Please enter you corpus directory path:");
-            bool dirExists = false;
+            Console.WriteLine("Please enter your directory path:");
             m_path = Console.ReadLine();
-            dirExists = Directory.Exists(m_path);
+            bool dirExists = Directory.Exists(m_path);
             if (dirExists)
             {
                 m_tfidf = new TFIDF(m_path);
-                m_level = MenuLevel.selectCommand;
+                m_level = MenuLevel.SelectCommand;
             }
             else
             {
@@ -94,7 +94,7 @@ namespace TFIIDF_TestProgram
             m_option = Console.ReadKey().KeyChar;
             if (m_option == '1' || m_option == '2' || m_option == '3')
             {
-                m_level = MenuLevel.useCache;
+                m_level = MenuLevel.UseCache;
                 switch (m_option)
                 {
                     case '1':
@@ -114,7 +114,7 @@ namespace TFIIDF_TestProgram
             {
                 if (m_option == 'q')
                 {
-                    m_level = MenuLevel.exit;
+                    m_level = MenuLevel.Exit;
                 }
             }
         }
@@ -127,14 +127,14 @@ namespace TFIIDF_TestProgram
             if (m_option == 'y' || m_option == 'Y')
             {
                 m_useCache = true;
-                m_level = MenuLevel.fileName;
+                m_level = MenuLevel.FileName;
             }
             else
             {
                 if (m_option == 'n' || m_option == 'N')
                 {
                     m_useCache = false;
-                    m_level = MenuLevel.fileName;
+                    m_level = MenuLevel.FileName;
                 }
                 else
                 {
@@ -161,7 +161,7 @@ namespace TFIIDF_TestProgram
             PrintHeadLine();
             Console.WriteLine("please type term:");
             m_term = Console.ReadLine();
-            m_level = MenuLevel.runCommand;
+            m_level = MenuLevel.RunCommand;
         }
 
         private static void HandleRunCommand()
@@ -206,24 +206,23 @@ namespace TFIIDF_TestProgram
                         break;
                 }
 
-                m_level = MenuLevel.showResult;
+                m_level = MenuLevel.ShowResult;
             }
             catch (Exception e)
             {
-
                 Console.WriteLine("error: {0}", e.Message);
                 Console.WriteLine("press any key to try again");
                 Console.ReadKey();
-                m_level = MenuLevel.selectCommand;
+                m_level = MenuLevel.SelectCommand;
             }
         }
 
         private static void HandleShowResult()
         {
-            PrintResult(m_command, m_path, m_fileName, m_term, m_result);
+            PrintResult();
             Console.WriteLine("press any key continue");
             Console.ReadKey();
-            m_level = MenuLevel.selectCommand;
+            m_level = MenuLevel.SelectCommand;
         }
 
         static void Main(string[] args)
@@ -239,28 +238,28 @@ namespace TFIIDF_TestProgram
             {
                 switch (m_level)
                 {
-                    case MenuLevel.path:
+                    case MenuLevel.Path:
                         HandlePath();
                         break;
-                    case MenuLevel.selectCommand:
+                    case MenuLevel.SelectCommand:
                         HandleSelectCommand();
                         break;
-                    case MenuLevel.useCache:
+                    case MenuLevel.UseCache:
                         HandleUseCache();
                         break;
-                    case MenuLevel.fileName:
+                    case MenuLevel.FileName:
                         HandleFileName();
                         break;
                     case MenuLevel.Term:
                         HandleTerm();
                         break;
-                    case MenuLevel.runCommand:
+                    case MenuLevel.RunCommand:
                         HandleRunCommand();
                         break;
-                    case MenuLevel.showResult:
+                    case MenuLevel.ShowResult:
                         HandleShowResult();
                         break;
-                    case MenuLevel.exit:
+                    case MenuLevel.Exit:
                     default:
                         exit = true;
                         Console.WriteLine("bye bye");
