@@ -43,7 +43,14 @@ Or use the Cache mechanism by using the following API:
 
 
 ## Class Diagram
-![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.JPG)
+![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.png)
+
+### Open Issues
+	* Add stream abstraction instead of using filesystem implicitly
+	* Implement unit tests for RandomReplacementAlgorithmCache
+	* Add Logging mechanism
+	* Consider removing stopwords while calculating TF-IDF
+	* In case of removing stopwords add localization support
 
 ### Prerequisites
 Use Visual Studio 2019 to load the solution. with .Net Framework 4.7.2and above
@@ -58,7 +65,7 @@ Use the command line program to try the TFIDF Library.
 
 ## Authors
 
-* **David Binyamin** - *Initial work* - [davidbinyamin](https://github.com/davidbinyamin)
+* **David Binyamin** - *Work in progress* - [davidbinyamin](https://github.com/davidbinyamin)
 
 
 ## License
