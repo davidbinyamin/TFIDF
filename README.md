@@ -6,7 +6,7 @@ TFIDF is a way of representing a document, based upon its keywords holding value
 
 ## Getting Started
 
-you can find the whole solution in this repository.
+you can find the solution in this repository.
 
 2 compilation products:
  * TFIDF.dll
@@ -15,7 +15,7 @@ you can find the whole solution in this repository.
 ### Description
 Cache.dll
 
-in this library you can use chache mechanism and select the caching algorithm at runtime.
+in this library you can use cache mechanism and select the caching algorithm at runtime.
 
 API:
 	
@@ -28,7 +28,7 @@ TFIDF.dll
 
 A library to calculate TF, IDF and TFIDF of a term in a document within a corpus
 
-You can calculate TF, IDF & TFIDF directly by accessing the file system pn each calculation
+You can calculate TF, IDF & TFIDF directly by accessing the file system on each calculation
 by using the following static API:
 
 	Public static double CalculateTF(string path, string filename, string term)
@@ -43,7 +43,14 @@ Or use the Cache mechanism by using the following API:
 
 
 ## Class Diagram
-![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.JPG)
+![alt text](https://github.com/davidbinyamin/TFIDF/blob/master/ClassDiagram.png)
+
+### Open Issues
+	* Add stream abstraction instead of using filesystem implicitly
+	* Implement unit tests for RandomReplacementAlgorithmCache
+	* Add Logging mechanism
+	* Consider removing stopwords while calculating TF-IDF
+	* In case of removing stopwords add localization support
 
 ### Prerequisites
 Use Visual Studio 2019 to load the solution. with .Net Framework 4.7.2and above
@@ -58,7 +65,7 @@ Use the command line program to try the TFIDF Library.
 
 ## Authors
 
-* **David Binyamin** - *Initial work* - [davidbinyamin](https://github.com/davidbinyamin)
+* **David Binyamin** - *Work in progress* - [davidbinyamin](https://github.com/davidbinyamin)
 
 
 ## License
