@@ -27,7 +27,6 @@ namespace InformationRetrieval
         public Dictionary<string, double> GetDocumentBagOfWordsTF(string fileName)
         {
             Dictionary<string, double> bagOfWords;
-
             bagOfWords = AlgorithmCache.GetElement(fileName);
 
             if (bagOfWords == null)
@@ -57,7 +56,6 @@ namespace InformationRetrieval
 
         public Dictionary<string, Dictionary<string, double>> GetAllBagsOfWordsInDirectory()
         {
-
             var documents = Directory.EnumerateFiles(m_dirPath);
             Dictionary<string, Dictionary<string, double>> bagOfBags = new Dictionary<string, Dictionary<string, double>>();
 
